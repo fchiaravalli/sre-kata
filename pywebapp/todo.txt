@@ -1,0 +1,26 @@
+Lista di cose che andrebbero ma che essendo un esercizio e non avendo il tempo non faro'
+
+
+user not root in dockerfile
+versioning from git / tag
+uwsgi instead of flask?
+check shaimage from local to ecr so to push only when something change
+variables for the port to be binded
+
+better location of the app code
+start the auto deploy after git commit on python 
+
+better tags on every resource to understand the cost/price
+ecs and alb not in the same deploy structure?
+add iam instance role to ecs task to write logs on cloudwatch
+
+
+ecs fargate more simple but not in the free tier
+
+ecs with ec2 better if we put a bastion to connect to the ec2 or ssm through console or ssh inside http
+
+iam role for infrastructure user and role for app deploy
+
+
+
+

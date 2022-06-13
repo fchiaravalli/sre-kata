@@ -1,0 +1,16 @@
+version: '2.2'
+services:
+  wordcount:
+      image: nozapp:latest
+      container_name: nozapp
+      ports:
+        - "80:8080"
+      networks:
+        noznetwork:
+          aliases:
+            - nozapp
+      sysctls:
+        net.ipv6.conf.all.disable_ipv6: 1
+networks:
+  noznetwork:
+    name: nozapp
