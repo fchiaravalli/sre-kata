@@ -44,6 +44,7 @@ resource "aws_lb_target_group" "target_group" {
     timeout             = "3"
     path                = "/"
     unhealthy_threshold = "2"
+    port = "traffic-port"
   }
 }
 

@@ -16,3 +16,12 @@ Please, follow these rules to achieve the goal:
 5. Once deployed, the application should be secure, fast, scalable, and highly available.
 6. Make any assumptions that you need to considering that your application will be publicly exposed.
 7. Once your solution is ready, please send us the link of your project.
+
+Instruction to install
+
+1. Install terraform version v1.2.2
+2. Install terragrunt version v0.37.1
+3. install aws cli 2 and configure your access cli
+4. Go to in the live folder of your env and type terragrunt init in any of the following folders [ecs, network, nozapp, vpc]
+5. Go in the nozony folder and run terragrunt run-all apply
+6. Click on the output with the weblink to the app
