@@ -35,3 +35,11 @@ variable "memory" {
 variable "app_port" {
   default = 8080
 }
+
+variable "max_capacity" {
+  default = 4
+}
+
+variable "min_capacity" {
+  default = 1
+}

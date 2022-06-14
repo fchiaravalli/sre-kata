@@ -4,23 +4,27 @@ Lista di cose che andrebbero ma che essendo un esercizio e non avendo il tempo n
 user not root in dockerfile
 versioning from git / tag
 uwsgi instead of flask?
-check shaimage from local to ecr so to push only when something change
-variables for the port to be binded
+check shaimage from local to ecr to be sure that is pushed correctly
+use a docker container with SELinux enabled
+
 
 better location of the app code
-start the auto deploy after git commit on python 
+start the auto build with also test of the app after git commit on python and after that deploy but only nozapp through a third service inside github or aws or tools like jenkins and bamboo
+create a limited user/role to use terragrunt inside nozapp, and use another role to build the infrastructure that does not change
+iam role for infrastructure user and role for app deploy
 
 better tags on every resource to understand the cost/price
 ecs and alb not in the same deploy structure?
-add iam instance role to ecs task to write logs on cloudwatch
-
 
 ecs fargate more simple but not in the free tier
 
 ecs with ec2 better if we put a bastion to connect to the ec2 or ssm through console or ssh inside http
 
-iam role for infrastructure user and role for app deploy
+better security groups rules, the ec2 does not need to go in internet, etc.
 
+attach an AWS waf on the load balancer
+
+ssl on loadbalancer
 
 
 

@@ -1,7 +1,8 @@
 inputs = {
   appname = "nozapp"
   appversion = "0.1"
-  builddir = "/home/fabrizio/Documents/nozony/pywebapp"
+  builddir = "/home/fabrizio/Documents/nozapp/sre-kata/pywebapp"
+  max_capacity = "8"
 }
 
 dependencies {

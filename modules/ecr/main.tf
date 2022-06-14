@@ -49,6 +49,11 @@ resource "null_resource" "dockerimage" {
   }
 } 
 
+resource "aws_cloudwatch_log_group" "containerapp" {
+  name              = "${var.appname}"
+  retention_in_days = 30
+}
+
 resource "aws_ecs_task_definition" "aws-ecs-task" {
   family = "${var.appname}-task"
   container_definitions = jsonencode([
@@ -63,7 +68,15 @@ resource "aws_ecs_task_definition" "aws-ecs-task" {
           containerPort = var.app_port
           hostPort      = 0
         }
-      ]
+      ],
+      "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "${var.appname}",
+            "awslogs-region": "${var.aws_region}",
+            "awslogs-stream-prefix": "ecs"
+          }
+      }
     }
     ])
   depends_on = [
@@ -71,7 +84,7 @@ resource "aws_ecs_task_definition" "aws-ecs-task" {
      ]
   #network_mode = "awsvpc"
   #execution_role_arn       = data.terraform_remote_state.ecs.outputs.ecs_task_role 
-  #task_role_arn            = data.terraform_remote_state.ecs.outputs.ecs_task_role 
+  task_role_arn            = data.terraform_remote_state.ecs.outputs.ecs_task_role 
 }
 
 resource "aws_ecs_service" "aws-ecs-service" {
@@ -82,7 +95,9 @@ resource "aws_ecs_service" "aws-ecs-service" {
   scheduling_strategy  = "REPLICA"
   desired_count        = 1
   force_new_deployment = true
+  iam_role = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS"
 
+#arn:aws:iam::aws:policy/aws-service-role/AmazonECSServiceRolePolicy"
   #network_configuration {
   #  subnets          = data.terraform_remote_state.network.outputs.private_subnet_ids
   #  assign_public_ip = false
@@ -100,3 +115,28 @@ resource "aws_ecs_service" "aws-ecs-service" {
 
 }
 
+resource "aws_appautoscaling_target" "ecs_target" {
+  max_capacity       = var.max_capacity
+  min_capacity       = var.min_capacity
+  resource_id        = "service/${data.terraform_remote_state.ecs.outputs.cluster_name}/${aws_ecs_service.aws-ecs-service.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  service_namespace  = "ecs"
+}
+
+resource "aws_appautoscaling_policy" "ecs_policy" {
+  name               = "scale-${var.appname}"
+  policy_type        = "TargetTrackingScaling"
+  resource_id        = aws_appautoscaling_target.ecs_target.resource_id
+  scalable_dimension = aws_appautoscaling_target.ecs_target.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.ecs_target.service_namespace
+
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ECSServiceAverageCPUUtilization"
+    }
+
+    target_value       = 75
+    scale_in_cooldown  = 60
+    scale_out_cooldown = 60
+  }
+}
