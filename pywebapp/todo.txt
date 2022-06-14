@@ -26,5 +26,7 @@ attach an AWS waf on the load balancer
 
 ssl on loadbalancer
 
+logs on loadbalancer
+
 
 
