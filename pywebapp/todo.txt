@@ -28,5 +28,6 @@ ssl on loadbalancer
 
 logs on loadbalancer
 
+refactor the nozapp folder with the terraform code to handle a list of apps and not only one as this excercise
 
 
