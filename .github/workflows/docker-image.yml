@@ -1,5 +1,4 @@
 name: Docker Image CI
-uses: the-commons-project/terragrunt-github-actions@1.0.6
 
 on:
   push:
@@ -14,9 +13,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Install AWS cli
+      id: install-aws-cli
+      uses: unfor19/install-aws-cli-action@v1.0.3
+      with:
+        version: 2     # default
+        verbose: false # default
+        arch: amd64    # allowed values: amd64, arm64
+        rootdir: ""    # defaults to "PWD"
+        workdir: ""    # defaults to "PWD/unfor19-awscli"
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: terragrunt --version
+      run: aws --version
       
 
 
